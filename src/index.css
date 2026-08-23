@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 214 38% 96%;
+    --foreground: 210 73% 17%;
+    --card: 0 0% 100%;
+    --card-foreground: 210 73% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 73% 17%;
+    --primary: 210 73% 17%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 174 62% 45%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 30% 94%;
+    --muted-foreground: 210 30% 55%;
+    --accent: 174 62% 45%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 26% 87%;
+    --input: 210 26% 87%;
+    --ring: 174 62% 45%;
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    direction: rtl;
+    font-family: 'Tajawal', sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-text-primary;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #0B2A4A;
+  }
+
+  input, textarea, select {
+    font-family: 'Tajawal', sans-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-500 text-white px-6 py-3 rounded-md font-body font-medium text-base
+           hover:bg-primary-600 transition-colors duration-200 border-0 cursor-pointer
+           focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-teal {
+    @apply bg-teal text-white px-6 py-3 rounded-md font-body font-medium text-base
+           hover:bg-teal-500 transition-colors duration-200 border-0 cursor-pointer
+           focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2;
+  }
+
+  .btn-outline {
+    @apply bg-transparent text-primary-500 px-6 py-3 rounded-md font-body font-medium text-base
+           border border-border hover:border-primary-400 hover:bg-primary-50 transition-colors duration-200 cursor-pointer
+           focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2;
+  }
+
+  .card {
+    @apply bg-white rounded-lg border border-border p-6 transition-all duration-200;
+  }
+
+  .card-hover {
+    @apply card hover:border-teal-300 hover:shadow-sm cursor-pointer;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .badge-teal {
+    @apply badge bg-teal-50 text-teal-600;
+  }
+
+  .badge-navy {
+    @apply badge bg-primary-50 text-primary-500;
+  }
+
+  .badge-gray {
+    @apply badge bg-gray-100 text-gray-600;
+  }
+
+  .input-field {
+    @apply w-full bg-white border border-border rounded-md px-4 py-3 text-base text-text-primary
+           placeholder-text-muted focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400
+           transition-colors duration-200 font-body;
+  }
+
+  .section-title {
+    @apply font-heading text-2xl font-semibold text-primary-500 mb-2;
+  }
+
+  .section-subtitle {
+    @apply font-body text-base text-text-secondary mb-8;
+  }
+
+  .stat-number {
+    @apply font-heading text-3xl font-bold text-primary-500;
+  }
+
+  .nav-link {
+    @apply font-body text-base text-text-secondary hover:text-primary-500 transition-colors duration-200 cursor-pointer;
+  }
+
+  .nav-link-active {
+    @apply font-body text-base text-teal font-medium;
+  }
+}
+
+@layer utilities {
+  .rtl-flip {
+    transform: scaleX(-1);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F7FA;
+}
+::-webkit-scrollbar-thumb {
+  background: #C5D5E6;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8AAAC8;
+}
+
+/* Transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 200ms, transform 200ms;
+}
