@@ -79,36 +79,48 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
     setCheckoutError(null);
     setCheckoutLoading(true);
 
-    const { data, error } = await supabase.functions.invoke("create-payment", {
-      body: {
-        cartItems: items.map((i) => ({
-          templateId: i.templateId,
-          templateTitle: i.templateTitle,
-          price: i.price,
-        })),
-      },
-    });
+    let data: Record<string, string> | null = null;
+    let invokeError: Error | null = null;
 
-    if (error) {
+    try {
+      const result = await supabase.functions.invoke("create-payment", {
+        body: {
+          cartItems: items.map((i) => ({
+            templateId: i.templateId,
+            templateTitle: i.templateTitle,
+            price: i.price,
+          })),
+        },
+      });
+      data = result.data;
+      invokeError = result.error;
+    } catch (e) {
+      invokeError = e as Error;
+    }
+
+    if (invokeError) {
       let msg = "تعذّر الاتصال ببوابة الدفع";
-      if (error instanceof FunctionsHttpError) {
+      if (invokeError instanceof FunctionsHttpError) {
         try {
-          const statusCode = error.context?.status ?? 500;
-          const textContent = await error.context?.text();
+          const cloned = invokeError.context?.clone ? invokeError.context.clone() : invokeError.context;
+          const textContent = await cloned?.text();
           try {
             const parsed = JSON.parse(textContent ?? "");
-            msg = parsed?.error ?? parsed?.message ?? textContent ?? error.message;
+            msg = parsed?.error ?? parsed?.message ?? textContent ?? invokeError.message;
           } catch {
-            msg = textContent || error.message || msg;
-          }
-          if (statusCode === 500 && msg.includes("MOYASAR_SECRET_KEY")) {
-            msg = "MOYASAR_SECRET_KEY غير مضبوط — أضف مفتاح Moyasar من إعدادات لوحة التحكم";
+            msg = textContent || invokeError.message || msg;
           }
         } catch {
-          msg = error.message || msg;
+          msg = invokeError.message || msg;
         }
       } else {
-        msg = error.message || msg;
+        msg = invokeError.message || msg;
+      }
+      // رسالة واضحة عند غياب مفتاح Moyasar
+      if (msg.includes("MOYASAR_SECRET_KEY") || msg.includes("secret") || msg.includes("500")) {
+        msg = msg.includes("MOYASAR_SECRET_KEY")
+          ? "MOYASAR_SECRET_KEY غير مضبوط — أضف مفتاح Moyasar من إعدادات لوحة التحكم"
+          : msg;
       }
       console.error("[cart-checkout] error:", msg);
       setCheckoutError(msg);
