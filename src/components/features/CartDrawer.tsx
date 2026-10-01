@@ -90,20 +90,27 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
     });
 
     if (error) {
-      let msg = error.message;
+      let msg = "تعذّر الاتصال ببوابة الدفع";
       if (error instanceof FunctionsHttpError) {
         try {
-          const raw = await error.context?.text();
-          // Try to extract JSON error message
+          const statusCode = error.context?.status ?? 500;
+          const textContent = await error.context?.text();
           try {
-            const parsed = JSON.parse(raw ?? "");
-            msg = parsed?.error ?? parsed?.message ?? raw ?? msg;
+            const parsed = JSON.parse(textContent ?? "");
+            msg = parsed?.error ?? parsed?.message ?? textContent ?? error.message;
           } catch {
-            msg = raw || msg;
+            msg = textContent || error.message || msg;
           }
-        } catch { /* ignore */ }
+          if (statusCode === 500 && msg.includes("MOYASAR_SECRET_KEY")) {
+            msg = "MOYASAR_SECRET_KEY غير مضبوط — أضف مفتاح Moyasar من إعدادات لوحة التحكم";
+          }
+        } catch {
+          msg = error.message || msg;
+        }
+      } else {
+        msg = error.message || msg;
       }
-      console.error("[cart-checkout]", msg);
+      console.error("[cart-checkout] error:", msg);
       setCheckoutError(msg);
       setCheckoutLoading(false);
       return;
