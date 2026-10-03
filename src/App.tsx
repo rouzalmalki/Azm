@@ -13,6 +13,7 @@ import PaymentCanceled from "@/pages/PaymentCanceled";
 import Terms from "@/pages/Terms";
 import Privacy from "@/pages/Privacy";
 import FAQ from "@/pages/FAQ";
+import Governance from "@/pages/Governance";
 import NotFound from "@/pages/NotFound";
 import AdminLayout from "@/pages/admin/AdminLayout";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
@@ -63,6 +64,8 @@ export default function App() {
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/privacy" element={<Privacy />} />
                   <Route path="/faq" element={<FAQ />} />
+                  <Route path="/governance" element={<Governance />} />
+                  <Route path="/governance/:size" element={<Governance />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>

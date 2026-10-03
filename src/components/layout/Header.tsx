@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate, Link } from "react-router-dom";
-import { Menu, X, BookOpen, User, Home, Landmark, ChevronDown, Eye, Target, Flag, Briefcase, Phone, ShoppingCart, ScrollText } from "lucide-react";
+import { Menu, X, BookOpen, User, Home, Landmark, ChevronDown, Eye, Target, Flag, Briefcase, Phone, ShoppingCart, ScrollText, Shield, Users, Building2, BarChart3 } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 import { useCart } from "@/hooks/useCart";
 import CartDrawer from "@/components/features/CartDrawer";
@@ -13,6 +13,13 @@ const NAV_ITEMS = [
 { to: "/account", label: "حسابي", icon: User }];
 
 
+const GOVERNANCE_SUB_ITEMS = [
+{ to: "/governance/micro", label: "الجمعيات المتناهية الصغر", icon: Users, color: "#2BB6A3" },
+{ to: "/governance/small", label: "الجمعيات الصغيرة", icon: Building2, color: "#0B2A4A" },
+{ to: "/governance/medium", label: "الجمعيات المتوسطة", icon: BarChart3, color: "#7C3AED" },
+{ to: "/governance/large", label: "الجمعيات الكبيرة", icon: Landmark, color: "#B45309" },
+];
+
 const ABOUT_SUB_ITEMS = [
 { to: "/about#vision", label: "الرؤية", icon: Eye },
 { to: "/about#mission", label: "الرسالة", icon: Target }];
@@ -21,10 +28,13 @@ const ABOUT_SUB_ITEMS = [
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [govOpen, setGovOpen] = useState(false);
   const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
+  const [mobileGovOpen, setMobileGovOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const govDropdownRef = useRef<HTMLDivElement>(null);
   const { count: cartCount } = useCart();
 
   // Close dropdown on outside click
@@ -36,6 +46,17 @@ export default function Header() {
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Close governance dropdown on outside click
+  useEffect(() => {
+    function handleClickOutsideGov(e: MouseEvent) {
+      if (govDropdownRef.current && !govDropdownRef.current.contains(e.target as Node)) {
+        setGovOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutsideGov);
+    return () => document.removeEventListener("mousedown", handleClickOutsideGov);
   }, []);
 
   // Listen for cart open event dispatched from toast action
@@ -138,6 +159,46 @@ export default function Header() {
               }
             </div>
 
+            {/* Governance Dropdown */}
+            <div className="relative" ref={govDropdownRef}>
+              <button
+                onClick={() => setGovOpen((v) => !v)}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-150 ${
+                govOpen
+                ? "bg-teal-50 text-[#2BB6A3]"
+                : "text-text-secondary hover:text-primary-500 hover:bg-gray-50"}`
+                }>
+                <Shield size={16} strokeWidth={1.75} />
+                الحوكمة
+                <ChevronDown size={13} strokeWidth={2} className={`transition-transform duration-200 ${govOpen ? "rotate-180" : ""}`} />
+              </button>
+              {govOpen && (
+                <div className="absolute top-full mt-1 right-0 w-52 bg-white border border-border rounded-xl shadow-lg py-1.5 z-50">
+                  <Link
+                    to="/governance"
+                    onClick={() => setGovOpen(false)}
+                    className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-gray-400 hover:bg-teal-50 hover:text-[#2BB6A3] transition-colors border-b border-gray-100 mb-1"
+                  >
+                    <Shield size={13} strokeWidth={1.75} />
+                    نظرة عامة على الحوكمة
+                  </Link>
+                  {GOVERNANCE_SUB_ITEMS.map((sub) => (
+                    <Link
+                      key={sub.to}
+                      to={sub.to}
+                      onClick={() => setGovOpen(false)}
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-text-secondary hover:bg-teal-50 hover:text-[#2BB6A3] transition-colors"
+                    >
+                      <div className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0" style={{ backgroundColor: sub.color + '15' }}>
+                        <sub.icon size={13} strokeWidth={1.75} style={{ color: sub.color }} />
+                      </div>
+                      {sub.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* بقية عناصر التنقل */}
             {NAV_ITEMS.filter((item) => item.to !== "/").map((item) =>
             <NavLink
@@ -203,6 +264,47 @@ export default function Header() {
               {item.label}
             </NavLink>
         )}
+
+          {/* Mobile Governance Accordion */}
+          <div>
+            <button
+              onClick={() => setMobileGovOpen((v) => !v)}
+              className="w-full flex items-center justify-between gap-2 px-4 py-2.5 rounded-md text-sm font-medium text-text-secondary hover:bg-gray-50 hover:text-primary-500 transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <Shield size={17} strokeWidth={1.75} />
+                الحوكمة
+              </div>
+              <ChevronDown
+                size={14}
+                strokeWidth={2}
+                className={`transition-transform duration-200 ${mobileGovOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+            {mobileGovOpen && (
+              <div className="mr-6 mt-1 space-y-1 border-r-2 border-teal-100 pr-3">
+                <Link
+                  to="/governance"
+                  onClick={() => { setMenuOpen(false); setMobileGovOpen(false); }}
+                  className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-text-secondary hover:bg-teal-50 hover:text-[#2BB6A3] transition-colors"
+                >
+                  <Shield size={15} strokeWidth={1.75} />
+                  نظرة عامة
+                </Link>
+                {GOVERNANCE_SUB_ITEMS.map((sub) => (
+                  <Link
+                    key={sub.to}
+                    to={sub.to}
+                    onClick={() => { setMenuOpen(false); setMobileGovOpen(false); }}
+                    className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-text-secondary hover:bg-teal-50 hover:text-[#2BB6A3] transition-colors"
+                  >
+                    <sub.icon size={15} strokeWidth={1.75} style={{ color: sub.color }} />
+                    {sub.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Mobile About Accordion */}
           <div>
