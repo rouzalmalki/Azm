@@ -26,6 +26,9 @@ const SIZES = {
     description: "جمعيات ناشئة بأعضاء أقل من 30 شخصاً وميزانية محدودة تحتاج إلى هياكل حوكمة مبسّطة وفعّالة.",
     memberRange: "أقل من 30 عضواً",
     budgetRange: "أقل من 100,000 ريال",
+    // روابط المكتبة المفلترة
+    librarySearch: "نظام أساسي",
+    libraryCategory: "اللوائح_والسياسات",
     features: [
       "نظام أساسي مبسّط",
       "محضر اجتماع الجمعية العمومية",
@@ -34,16 +37,16 @@ const SIZES = {
       "تقرير النشاط السنوي",
     ],
     docs: [
-      { title: "النظام الأساسي للجمعية المتناهية الصغر", category: "حوكمة" },
-      { title: "محضر الاجتماع التأسيسي", category: "وثائق الاجتماعات" },
-      { title: "نموذج طلب العضوية", category: "إدارية" },
-      { title: "تقرير النشاط السنوي المبسّط", category: "تقارير" },
+      { title: "النظام الأساسي للجمعية المتناهية الصغر", category: "حوكمة", search: "نظام أساسي" },
+      { title: "محضر الاجتماع التأسيسي", category: "وثائق الاجتماعات", search: "محضر" },
+      { title: "نموذج طلب العضوية", category: "إدارية", search: "عضوية" },
+      { title: "تقرير النشاط السنوي المبسّط", category: "تقارير", search: "تقرير سنوي" },
     ],
   },
   small: {
     key: "small",
     label: "الجمعيات الصغيرة",
-    shortLabel: "الجمعيرة",
+    shortLabel: "الصغيرة",
     icon: Building2,
     color: "#0B2A4A",
     bg: "from-blue-50 to-indigo-50",
@@ -52,6 +55,8 @@ const SIZES = {
     description: "جمعيات ذات هيكل تنظيمي واضح، بعضوية تتراوح بين 30 و100 شخص، وتحتاج إلى أدوات حوكمة متوسطة التعقيد.",
     memberRange: "30 – 100 عضو",
     budgetRange: "100,000 – 500,000 ريال",
+    librarySearch: "",
+    libraryCategory: "اللوائح_والسياسات",
     features: [
       "نظام أساسي تفصيلي",
       "لائحة مجلس الإدارة",
@@ -61,11 +66,11 @@ const SIZES = {
       "لائحة الموارد البشرية",
     ],
     docs: [
-      { title: "النظام الأساسي للجمعية الصغيرة", category: "حوكمة" },
-      { title: "لائحة مجلس الإدارة", category: "حوكمة" },
-      { title: "خطة العمل السنوية", category: "تخطيط" },
-      { title: "سياسة الإفصاح والشفافية", category: "سياسات" },
-      { title: "تقرير التدقيق الداخلي", category: "مالية" },
+      { title: "النظام الأساسي للجمعية الصغيرة", category: "حوكمة", search: "نظام أساسي" },
+      { title: "لائحة مجلس الإدارة", category: "حوكمة", search: "مجلس الإدارة" },
+      { title: "خطة العمل السنوية", category: "تخطيط", search: "خطة العمل" },
+      { title: "سياسة الإفصاح والشفافية", category: "سياسات", search: "لائحة داخلية" },
+      { title: "تقرير التدقيق الداخلي", category: "مالية", search: "تقرير" },
     ],
   },
   medium: {
@@ -80,6 +85,8 @@ const SIZES = {
     description: "جمعيات راسخة بعضوية بين 100 و500 شخص، تمتلك وحدات إدارية متعددة وتحتاج إلى منظومة حوكمة متكاملة.",
     memberRange: "100 – 500 عضو",
     budgetRange: "500,000 – 5,000,000 ريال",
+    librarySearch: "حوكمة",
+    libraryCategory: "اللوائح_والسياسات",
     features: [
       "منظومة لوائح داخلية متكاملة",
       "سياسة إدارة المخاطر",
@@ -90,12 +97,12 @@ const SIZES = {
       "تقييم الأداء المؤسسي",
     ],
     docs: [
-      { title: "دليل الحوكمة المؤسسية", category: "حوكمة" },
-      { title: "سياسة إدارة المخاطر", category: "سياسات" },
-      { title: "لائحة المشتريات والعقود", category: "مالية" },
-      { title: "خطة الاتصال المؤسسي", category: "تواصل" },
-      { title: "تقرير التدقيق الخارجي", category: "مالية" },
-      { title: "نموذج تقييم الأداء المؤسسي", category: "تقارير" },
+      { title: "دليل الحوكمة المؤسسية", category: "حوكمة", search: "حوكمة" },
+      { title: "سياسة إدارة المخاطر", category: "سياسات", search: "لائحة" },
+      { title: "لائحة المشتريات والعقود", category: "مالية", search: "مشتريات" },
+      { title: "خطة الاتصال المؤسسي", category: "تواصل", search: "خطة" },
+      { title: "تقرير التدقيق الخارجي", category: "مالية", search: "تقرير" },
+      { title: "نموذج تقييم الأداء المؤسسي", category: "تقارير", search: "تقييم" },
     ],
   },
   large: {
@@ -110,6 +117,8 @@ const SIZES = {
     description: "جمعيات راسخة بعضوية تتجاوز 500 شخص، وهياكل تنفيذية معقدة تستوجب أعلى معايير الحوكمة والرقابة والشفافية.",
     memberRange: "أكثر من 500 عضو",
     budgetRange: "أكثر من 5,000,000 ريال",
+    librarySearch: "تضارب المصالح",
+    libraryCategory: "اللوائح_والسياسات",
     features: [
       "دليل الحوكمة الشامل",
       "لجان متخصصة (تدقيق، مخاطر، مكافآت)",
@@ -121,18 +130,30 @@ const SIZES = {
       "دليل التوجيه للأعضاء الجدد",
     ],
     docs: [
-      { title: "دليل الحوكمة الشامل للجمعيات الكبيرة", category: "حوكمة" },
-      { title: "لائحة لجنة التدقيق", category: "حوكمة" },
-      { title: "إطار إدارة الاستدامة", category: "استراتيجية" },
-      { title: "تقرير الأثر الاجتماعي", category: "تقارير" },
-      { title: "سياسة الامتثال والمساءلة", category: "سياسات" },
-      { title: "خطة الخلافة والاستمرارية", category: "استراتيجية" },
-      { title: "آلية التظلم والشكاوى", category: "إدارية" },
+      { title: "دليل الحوكمة الشامل للجمعيات الكبيرة", category: "حوكمة", search: "حوكمة" },
+      { title: "لائحة لجنة التدقيق", category: "حوكمة", search: "لائحة" },
+      { title: "إطار إدارة الاستدامة", category: "استراتيجية", search: "لائحة داخلية" },
+      { title: "تقرير الأثر الاجتماعي", category: "تقارير", search: "تقرير سنوي" },
+      { title: "سياسة الامتثال والمساءلة", category: "سياسات", search: "تضارب المصالح" },
+      { title: "خطة الخلافة والاستمرارية", category: "استراتيجية", search: "لائحة" },
+      { title: "آلية التظلم والشكاوى", category: "إدارية", search: "نموذج" },
     ],
   },
 };
 
 type SizeKey = keyof typeof SIZES;
+
+// Helper — build library URL with governance filters
+function buildLibraryUrl(sizeKey: string, docSearch?: string): string {
+  const data = SIZES[sizeKey as SizeKey];
+  if (!data) return "/library";
+  const params = new URLSearchParams();
+  const q = docSearch ?? data.librarySearch;
+  if (q) params.set("q", q);
+  if (data.libraryCategory) params.set("category", data.libraryCategory);
+  params.set("governance", sizeKey);
+  return `/library?${params.toString()}`;
+}
 
 export default function Governance() {
   const { size } = useParams<{ size?: string }>();
@@ -145,6 +166,10 @@ export default function Governance() {
 
   const data = SIZES[size as SizeKey];
   const Icon = data.icon;
+
+  const handleBrowseLibrary = (docSearch?: string) => {
+    navigate(buildLibraryUrl(size, docSearch));
+  };
 
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
@@ -218,15 +243,15 @@ export default function Governance() {
             <BookOpen size={22} strokeWidth={1.5} className="mb-3 opacity-80" />
             <h3 className="font-heading font-bold text-base mb-1.5">تصفّح النماذج المتعلقة</h3>
             <p className="text-white/70 text-xs leading-relaxed mb-4">
-              اعثر على جميع النماذج والوثائق المخصصة لهذا النوع من الجمعيات في مكتبة عزم.
+              اعثر على جميع النماذج والوثائق المخصصة لهذا النوع من الجمعيات في مكتبة عزم — مع تصفية تلقائية.
             </p>
-            <Link
-              to="/library"
+            <button
+              onClick={() => handleBrowseLibrary()}
               className="inline-flex items-center gap-1.5 bg-white/20 hover:bg-white/30 border border-white/30 text-white text-xs font-semibold px-4 py-2 rounded-xl transition-colors"
             >
               <ArrowLeft size={13} strokeWidth={2} className="rotate-180" />
-              تصفّح المكتبة
-            </Link>
+              تصفّح المكتبة مع فلتر تلقائي
+            </button>
           </div>
         </div>
 
@@ -264,21 +289,21 @@ export default function Governance() {
                       {doc.category}
                     </span>
                   </div>
-                  <Link
-                    to="/library"
+                  <button
+                    onClick={() => handleBrowseLibrary(doc.search)}
                     className="flex-shrink-0 flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-lg border transition-colors opacity-0 group-hover:opacity-100"
                     style={{ borderColor: data.color + "40", color: data.color }}
                   >
                     البحث
                     <ArrowLeft size={11} strokeWidth={2} className="rotate-180" />
-                  </Link>
+                  </button>
                 </div>
               ))}
             </div>
             <div className="px-5 py-4 bg-gray-50 border-t border-gray-100">
-              <Link
-                to="/library"
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-semibold transition-colors hover:text-white"
+              <button
+                onClick={() => handleBrowseLibrary()}
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-semibold transition-colors"
                 style={{
                   borderColor: data.color,
                   color: data.color,
@@ -294,7 +319,7 @@ export default function Governance() {
               >
                 <BookOpen size={15} strokeWidth={2} />
                 عرض جميع النماذج في المكتبة
-              </Link>
+              </button>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { SlidersHorizontal, X, ChevronDown, Users, Building2, FolderKanban, Target, Zap, BarChart2, CheckCircle2, RefreshCw, AlertCircle, Cloud } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams, useNavigate, Link } from "react-router-dom";
+import { SlidersHorizontal, X, ChevronDown, Users, Building2, FolderKanban, Target, Zap, BarChart2, CheckCircle2, RefreshCw, AlertCircle, Cloud, Shield, ArrowRight } from "lucide-react";
 import SearchBar from "@/components/features/SearchBar";
 import ScrollToTopButton from "@/components/features/ScrollToTopButton";
 import TemplateCard from "@/components/features/TemplateCard";
@@ -377,10 +377,19 @@ export default function Library() {
   // ── Merged templates (DB + static) ───────────────────────────────────────
   const { templates: ALL_TEMPLATES, loading: templatesLoading, error: templatesError, refresh } = useTemplates();
 
+  const governanceSize = searchParams.get("governance") || "";
   const [search, setSearch] = useState(searchParams.get("q") || "");
   const [category, setCategory] = useState<TemplateCategory | "all">(
     (searchParams.get("category") as TemplateCategory) || "all"
   );
+
+  // Sync state when URL changes (e.g. navigating from governance page)
+  useEffect(() => {
+    const q = searchParams.get("q") || "";
+    const cat = (searchParams.get("category") as TemplateCategory) || "all";
+    setSearch(q);
+    setCategory(cat);
+  }, [searchParams]);
   const [docType, setDocType] = useState<DocumentType | "all">("all");
   const [targetEntity, setTargetEntity] = useState<TargetEntity | "all">("all");
   const [sortBy, setSortBy] = useState<"newest" | "mostDownloaded" | "rating">("newest");
@@ -457,6 +466,14 @@ export default function Library() {
     setSortBy("newest");
     setSearch("");
     setProjectStage("all");
+    setSearchParams({});
+  };
+
+  const GOVERNANCE_LABELS: Record<string, { label: string; color: string; bg: string; border: string }> = {
+    micro:  { label: "الجمعيات المتناهية الصغر", color: "#2BB6A3", bg: "bg-teal-50",   border: "border-teal-200"  },
+    small:  { label: "الجمعيات الصغيرة",          color: "#0B2A4A", bg: "bg-blue-50",   border: "border-blue-200"  },
+    medium: { label: "الجمعيات المتوسطة",          color: "#7C3AED", bg: "bg-purple-50", border: "border-purple-200" },
+    large:  { label: "الجمعيات الكبيرة",           color: "#B45309", bg: "bg-amber-50",  border: "border-amber-200"  },
   };
 
   return (
@@ -494,6 +511,40 @@ export default function Library() {
           تحديث
         </button>
       </div>
+
+      {/* ── Governance filter banner ── */}
+      {governanceSize && GOVERNANCE_LABELS[governanceSize] && (
+        <div
+          className={`flex items-center gap-3 ${GOVERNANCE_LABELS[governanceSize].bg} border ${GOVERNANCE_LABELS[governanceSize].border} rounded-xl px-4 py-3 mb-5`}
+        >
+          <Shield size={16} strokeWidth={1.75} style={{ color: GOVERNANCE_LABELS[governanceSize].color }} className="flex-shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold" style={{ color: GOVERNANCE_LABELS[governanceSize].color }}>
+              نتائج مفلترة لـ: {GOVERNANCE_LABELS[governanceSize].label}
+            </p>
+            <p className="text-xs text-gray-500 mt-0.5">
+              تعرض النماذج المتعلقة باحتياجات الحوكمة لهذه الفئة — يمكنك تعديل الفلاتر أو مسحها لعرض المكتبة كاملة.
+            </p>
+          </div>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <Link
+              to={`/governance/${governanceSize}`}
+              className="flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded-lg border transition-colors"
+              style={{ borderColor: GOVERNANCE_LABELS[governanceSize].color + "50", color: GOVERNANCE_LABELS[governanceSize].color }}
+            >
+              <ArrowRight size={11} strokeWidth={2} />
+              العودة للحوكمة
+            </Link>
+            <button
+              onClick={clearFilters}
+              className="flex items-center gap-1 text-xs text-gray-400 hover:text-gray-600 px-2 py-1.5 rounded-lg hover:bg-white/60 transition-colors"
+            >
+              <X size={13} strokeWidth={2} />
+              مسح
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Error banner */}
       {templatesError && (
