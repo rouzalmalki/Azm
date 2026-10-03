@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { Users, Building2, BarChart3, Landmark, ArrowLeft, Shield, ChevronLeft } from "lucide-react";
 import SearchBar from "@/components/features/SearchBar";
 import CategoryGrid from "@/components/features/CategoryGrid";
 import StatsBar from "@/components/features/StatsBar";
@@ -126,6 +127,168 @@ export default function Home() {
           </button>
         </div>
         <CategoryGrid categories={CATEGORIES} />
+      </section>
+
+      {/* Governance Section */}
+      <section className="relative overflow-hidden mt-16">
+        {/* Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B2A4A] via-[#0d3260] to-[#0f3a72]" />
+        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, #2BB6A3 0%, transparent 50%), radial-gradient(circle at 80% 20%, #2BB6A3 0%, transparent 40%)' }} />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+          {/* Section header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-[#2BB6A3]/20 border border-[#2BB6A3]/30 rounded-full px-3.5 py-1.5 mb-4">
+                <Shield size={13} strokeWidth={2} className="text-[#2BB6A3]" />
+                <span className="text-[#2BB6A3] text-xs font-semibold">منظومة الحوكمة</span>
+              </div>
+              <h2 className="font-heading font-bold text-2xl sm:text-3xl text-white leading-snug">
+                حوكمة مصمّمة لكل حجم
+              </h2>
+              <p className="text-white/50 text-sm mt-2 leading-relaxed max-w-xl">
+                اختر فئة جمعيتك واحصل على النماذج والوثائق الملائمة لاحتياجات الحوكمة تلقائياً
+              </p>
+            </div>
+            <Link
+              to="/governance"
+              className="flex items-center gap-1.5 text-[#2BB6A3] text-sm font-semibold hover:text-teal-300 transition-colors flex-shrink-0"
+            >
+              <span>استعراض الحوكمة كاملاً</span>
+              <ArrowLeft size={14} strokeWidth={2.5} className="rotate-180" />
+            </Link>
+          </div>
+
+          {/* Cards grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {([
+              {
+                to: "/governance/micro",
+                label: "المتناهية الصغر",
+                sublabel: "Micro",
+                icon: Users,
+                color: "#2BB6A3",
+                memberRange: "أقل من 30 عضواً",
+                budget: "< 100K ريال",
+                docCount: 4,
+                desc: "جمعيات ناشئة تحتاج هياكل حوكمة مبسّطة وفعّالة.",
+                gradient: "from-teal-500/10 to-teal-600/5",
+                border: "border-teal-500/20 hover:border-teal-400/40",
+              },
+              {
+                to: "/governance/small",
+                label: "الصغيرة",
+                sublabel: "Small",
+                icon: Building2,
+                color: "#60A5FA",
+                memberRange: "30 – 100 عضو",
+                budget: "100K – 500K",
+                docCount: 5,
+                desc: "هيكل تنظيمي واضح يتطلب أدوات حوكمة متوسطة التعقيد.",
+                gradient: "from-blue-500/10 to-blue-600/5",
+                border: "border-blue-500/20 hover:border-blue-400/40",
+              },
+              {
+                to: "/governance/medium",
+                label: "المتوسطة",
+                sublabel: "Medium",
+                icon: BarChart3,
+                color: "#A78BFA",
+                memberRange: "100 – 500 عضو",
+                budget: "500K – 5M",
+                docCount: 6,
+                desc: "وحدات إدارية متعددة تستوجب منظومة حوكمة متكاملة.",
+                gradient: "from-purple-500/10 to-purple-600/5",
+                border: "border-purple-500/20 hover:border-purple-400/40",
+              },
+              {
+                to: "/governance/large",
+                label: "الكبيرة",
+                sublabel: "Large",
+                icon: Landmark,
+                color: "#FBB041",
+                memberRange: "أكثر من 500 عضو",
+                budget: "5M+ ريال",
+                docCount: 7,
+                desc: "أعلى معايير الحوكمة والرقابة والشفافية للمؤسسات الراسخة.",
+                gradient: "from-amber-500/10 to-amber-600/5",
+                border: "border-amber-500/20 hover:border-amber-400/40",
+              },
+            ] as const).map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={`group relative bg-gradient-to-br ${item.gradient} border ${item.border} rounded-2xl p-5 flex flex-col gap-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/20`}
+                >
+                  {/* Icon + sublabel */}
+                  <div className="flex items-start justify-between">
+                    <div
+                      className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: item.color + '18', border: `1.5px solid ${item.color}30` }}
+                    >
+                      <Icon size={20} strokeWidth={1.5} style={{ color: item.color }} />
+                    </div>
+                    <span className="text-[10px] font-semibold tracking-wider uppercase" style={{ color: item.color + 'CC' }}>
+                      {item.sublabel}
+                    </span>
+                  </div>
+
+                  {/* Label + description */}
+                  <div>
+                    <h3 className="font-heading font-bold text-white text-base leading-snug mb-1.5">
+                      الجمعيات {item.label}
+                    </h3>
+                    <p className="text-white/45 text-[11px] leading-relaxed">{item.desc}</p>
+                  </div>
+
+                  {/* Stats row */}
+                  <div className="mt-auto pt-3 border-t border-white/8 flex items-center justify-between">
+                    <div>
+                      <p className="text-[10px] text-white/35 mb-0.5">الأعضاء</p>
+                      <p className="text-xs font-semibold text-white/70">{item.memberRange}</p>
+                    </div>
+                    <div
+                      className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                      style={{ color: item.color, backgroundColor: item.color + '18' }}
+                    >
+                      {item.docCount} وثائق
+                    </div>
+                  </div>
+
+                  {/* CTA row */}
+                  <div
+                    className="flex items-center gap-1 text-[11px] font-semibold transition-all duration-150 opacity-60 group-hover:opacity-100"
+                    style={{ color: item.color }}
+                  >
+                    <span>تصفّح النماذج</span>
+                    <ChevronLeft size={12} strokeWidth={2.5} className="rotate-180" />
+                  </div>
+
+                  {/* Hover glow */}
+                  <div
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+                    style={{ boxShadow: `inset 0 0 0 1px ${item.color}30` }}
+                  />
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Bottom CTA bar */}
+          <div className="mt-8 flex items-center justify-center gap-3">
+            <div className="flex-1 h-px bg-white/8" />
+            <Link
+              to="/governance"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/8 border border-white/12 text-white/70 text-xs font-semibold hover:bg-white/12 hover:text-white/90 transition-all"
+            >
+              <Shield size={13} strokeWidth={2} className="text-[#2BB6A3]" />
+              استعراض نظرة عامة على منظومة الحوكمة
+            </Link>
+            <div className="flex-1 h-px bg-white/8" />
+          </div>
+        </div>
       </section>
 
       {/* Featured Templates */}
